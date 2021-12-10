@@ -56,9 +56,7 @@ export const PropertyItem: React.FC<PropertyItemProps> = props => {
                 <div className="content-footer">
                     <Grade value={4.64} />
                     <div className="price-warpper">
-                        <span className="price">
-                            ₩ {props.price.toLocaleString()}
-                        </span>
+                        <span className="price">₩ {props.price.toLocaleString()}</span>
                         <span className="perDay">/ 일</span>
                     </div>
                 </div>

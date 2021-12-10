@@ -12,21 +12,16 @@ export const CustomDay = styled.div`
 
 export const CalendarContainer = styled.div`
     position: relative;
-    /* height: 350px; */
+    height: 330px;
+    overflow: hidden;
 
     .DayPicker_weekHeader {
         width: 100%;
+        z-index: 0 !important;
 
         .DayPicker_weekHeader_li {
             font-size: 12px;
-            /* width: 45px !important;
-            height: 45px !important; */
         }
-    }
-
-    .CalendarDay {
-        /* width: 40px !important;
-        height: 40px !important; */
     }
 
     .DayPickerNavigation {
@@ -35,6 +30,7 @@ export const CalendarContainer = styled.div`
         justify-content: space-between;
         padding: 0 15px;
         top: 15px;
+        z-index: 0 !important;
 
         .DayPickerNavigation_button {
             display: flex;
@@ -54,6 +50,15 @@ export const CalendarContainer = styled.div`
         }
     }
 
+    .CalendarMonthGrid {
+        background: none;
+
+        .CalendarMonth {
+            position: relative;
+            background: none;
+        }
+    }
+
     .CalendarMonth_caption {
         font-size: 15px;
     }
@@ -61,6 +66,7 @@ export const CalendarContainer = styled.div`
     .CalendarMonth_table {
         border-collapse: separate;
         border-spacing: 0 4px;
+        transform: translateY(20px);
 
         .CalendarDay {
             border: none;
@@ -118,7 +124,7 @@ export const CalendarContainer = styled.div`
                     color: black;
                     height: 20px;
                     box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
-                    border-radius: 10px;
+                    border-radius: 3px;
                     transform: translateX(-50%);
                     background-color: white;
                     z-index: 100;
@@ -149,7 +155,7 @@ export const CalendarContainer = styled.div`
                     color: black;
                     height: 20px;
                     box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
-                    border-radius: 10px;
+                    border-radius: 3px;
                     transform: translateX(-50%);
                     background-color: white;
                     z-index: 100;
@@ -172,5 +178,17 @@ export const CalendarContainer = styled.div`
                 }
             }
         }
+    }
+
+    .DayPicker_transitionContainer {
+        overflow: visible;
+        top: 40px;
+    }
+
+    .CalendarMonth_caption {
+        width: 200px;
+        padding: 0;
+        margin: auto;
+        transform: translateY(-15px);
     }
 `
