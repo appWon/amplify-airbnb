@@ -12,4 +12,10 @@ export const GradeContainer = styled.div`
         font-size: 13px;
         font-weight: 600;
     }
+
+    .plceGradeCount {
+        margin-left: 5px;
+        font-size: 13px;
+        font-weight: 300;
+    }
 `
