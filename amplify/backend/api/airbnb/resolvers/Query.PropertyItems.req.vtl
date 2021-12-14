@@ -1,0 +1,37 @@
+#set( $indexPath = "/property/_search" )
+#set( $input = $ctx.args.input )
+#set( $location = $ctx.args.location )
+#set( $distance = $util.defaultIfNull($input.km, 200) )
+
+{
+  "version": "2018-05-29",
+  "operation" : "GET",
+  "path": "$indexPath",
+  "params": {
+    "body": {
+      "size": #if( $input.limit ) $input.limit #else 10 #end,
+      "from": #if( $input.from ) $input.from #else 0 #end,
+       "sort": [{
+         "_geo_distance": {
+           "location": $util.toJson($location),
+           "order": "asc",
+           "unit": "km", 
+           "distance_type": "plane" 
+        }
+      }],
+      "query": {
+        "bool" : {
+          "must" : {
+              "match_all" : {}
+          },
+          "filter" : {
+           "geo_distance" : {
+                 "distance" : "${distance}km",
+                 "location" : $util.toJson($location)
+             }
+          }
+        }
+      }
+    }
+  }
+}
