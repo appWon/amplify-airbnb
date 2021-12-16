@@ -1,6 +1,18 @@
 import styled from 'styled-components'
-import icon from '../../../assetts/img/airBnb.png'
 
-export const customImg = styled.img.attrs({
-  url: '',
-})``
+export const MarkerContainer = styled.div`
+    div {
+        padding: 15px !important;
+        width: 30px !important;
+        background-color: red !important;
+        img {
+            padding: 15px !important;
+            width: 30px !important;
+            background-color: red !important;
+        }
+    }
+
+    .marker {
+        background-color: green;
+    }
+`
