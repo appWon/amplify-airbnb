@@ -1,45 +1,58 @@
 import React from 'react'
 import { API } from 'aws-amplify'
+import { useSelector } from 'react-redux'
 
 import { PropertyContainer } from './style.propertyList'
 import { PropertyItems } from '../../components/templates/PropertyItems'
-import { KakaoMap } from '../../components/templates/KakaoMap'
-import { ListPropertiesQuery } from '../../API'
-import { listProperties } from '../../graphql/queries'
+import { propertyItems } from '../../graphql/queries'
+import { searchSelector } from '../../store/selector'
+import { PropertyItemsConnection } from '../../API'
 
 export const Property: React.FC = () => {
-    const [mapFold, setMapFold] = React.useState<boolean>(false)
+    const { location } = useSelector(searchSelector)
+
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
-    const [ItemList, setItemList] = React.useState<ListPropertiesQuery | null>(
-        null
-    )
+    const [fetchData, setFetchData] = React.useState<PropertyItemsConnection | null>(null)
+    const [pageCount, setPageCount] = React.useState<number>(0)
 
     React.useEffect(() => {
-        const query = async () => {
+        const getFetch = async () => {
             try {
                 setIsLoading(true)
-                const result = (await API.graphql({
-                    query: listProperties,
-                })) as { data: ListPropertiesQuery }
 
-                setItemList(result.data)
+                const result = (await API.graphql({
+                    query: propertyItems,
+                    variables: {
+                        location: location,
+                        input: {
+                            km: 100,
+                            from: pageCount,
+                            limit: 5,
+                        },
+                    },
+                })) as { data: { propertyItems: PropertyItemsConnection } }
+
+                setTimeout(() => {
+                    setFetchData(result.data.propertyItems)
+                    setIsLoading(false)
+                }, 500)
             } catch (error) {
                 console.log(error)
-            } finally {
-                setIsLoading(false)
             }
         }
-        query()
-    }, [])
+
+        if (location.lat) {
+            getFetch()
+        }
+    }, [location])
 
     return (
         <PropertyContainer>
-            {!mapFold && <PropertyItems {...ItemList} mapFold={mapFold} />}
-            <KakaoMap
+            <PropertyItems
+                fetchData={fetchData}
                 isLoading={isLoading}
-                properties={ItemList}
-                mapFold={mapFold}
-                onMapFoldChange={setMapFold}
+                pageCount={pageCount}
+                onChangePage={setPageCount}
             />
         </PropertyContainer>
     )

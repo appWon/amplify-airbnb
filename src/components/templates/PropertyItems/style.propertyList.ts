@@ -1,42 +1,41 @@
-import styled, { css, keyframes } from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const PropertyItemsContainer = styled.section<{
+export const PropertyItemsContainer = styled.section`
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    height: 100%;
+`
+
+export const PropertyListWapper = styled.div<{
     mapFold: boolean
 }>`
-    position: relative;
+    display: flex;
     flex-direction: column;
     padding: 0 20px 20px 20px;
-    /* min-width: 750px; */
-    /* transition: all 1s; */
 
     ${({ mapFold }) =>
-        !mapFold
-            ? css`
-                  animation: show 0.2s;
-                  opacity: 1;
-                  transition: opacity 0.2s;
-              `
-            : css`
-                  animation: hide 0.2s;
-                  opacity: 0;
-                  transition: opacity 0.2s;
-              `}
+        mapFold &&
+        css`
+            width: 740px;
+            height: 100%;
+            z-index: 2;
+            background: white;
+            animation: hide 1s;
+            transition: opacity 0.2s;
+            animation-fill-mode: forwards;
+        `}
 
     @keyframes hide {
         0% {
-            display: block;
+            position: absolute;
+            left: 0;
         }
         100% {
+            left: -100%;
+            opacity: 0;
             display: none;
-        }
-    }
-
-    @keyframes show {
-        0% {
-            display: none;
-        }
-        100% {
-            display: block;
+            position: absolute;
         }
     }
 
@@ -72,6 +71,7 @@ export const PropertyItemsContainer = styled.section<{
         display: flex;
         justify-content: center;
         width: 100%;
+        margin: 10px 0;
 
         .pagination-ul {
             list-style: none;
@@ -95,4 +95,9 @@ export const PropertyItemsContainer = styled.section<{
             }
         }
     }
+`
+
+export const MapWapper = styled.section`
+    width: 100%;
+    height: 100vh;
 `

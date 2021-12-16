@@ -9,10 +9,10 @@ import { SliderItem } from '../../atoms/SliderImg'
 import noImg from '../../../assetts/img/noImage.png'
 
 interface SliderImageProps {
-    imgs?: Array<{ url: string }>
+    imgs?: Array<string | null>
 }
 
-export const SliderImage: React.FC<SliderImageProps> = props => {
+export const SliderImage = (props: SliderImageProps) => {
     const settings = {
         dotsClass: 'slick-dots',
         speed: 500,
@@ -24,22 +24,16 @@ export const SliderImage: React.FC<SliderImageProps> = props => {
         autoplay: false,
         arrows: true,
         nextArrow: (
-            <MdKeyboardArrowRight
-                style={{ width: '50px', height: '50px', color: 'black' }}
-            />
+            <MdKeyboardArrowRight style={{ width: '50px', height: '50px', color: 'black' }} />
         ),
-        prevArrow: (
-            <MdKeyboardArrowLeft style={{ width: '50px', height: '50px' }} />
-        ),
+        prevArrow: <MdKeyboardArrowLeft style={{ width: '50px', height: '50px' }} />,
     }
 
     return (
         <SliderImageContainer>
             <Slider {...settings}>
                 {props.imgs?.length ? (
-                    props.imgs.map(img => (
-                        <SliderItem src={img.url} key={img.url} />
-                    ))
+                    props.imgs.map(url => url && <SliderItem src={url} key={url} />)
                 ) : (
                     <SliderItem src={noImg} width="50px" height="50px" />
                 )}

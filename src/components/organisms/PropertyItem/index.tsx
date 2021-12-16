@@ -5,58 +5,37 @@ import { SliderImage } from '../../molecules/SliderImage'
 import { Grade } from '../../atoms/Grade'
 import { SliderItem } from '../../atoms/SliderImg'
 import noImg from '../../../assetts/img/noImage.png'
+import { PropertyItemsConnectionItem } from '../../../API'
 
-interface PropertyItemProps {
-    id: string
-    title: string
-    price: number
-    capacity: number
-    type?: {
-        id: string
-        name: string
-    } | null
-    images?: {
-        items: Array<{
-            id: string
-            url: string
-        }>
-    } | null
-    facility: {
-        items: Array<{
-            facility: {
-                name: string
-            }
-        }>
-    } | null
-}
+export const PropertyItem: React.FC<PropertyItemsConnectionItem> = props => {
+    const { property } = props
 
-export const PropertyItem: React.FC<PropertyItemProps> = props => {
     return (
         <PropertyItemContainer>
-            <SliderImage imgs={props.images?.items} />
+            <SliderImage imgs={property?.images} />
             <div className="content">
                 <div className="content-heade">
-                    <div className="sub-title">{`수정중의 ${props.type?.name}`}</div>
-                    <div className="title">{props.title}</div>
+                    <div className="sub-title">{`수정중의 ${'type name'}`}</div>
+                    <div className="title">{property?.title}</div>
                 </div>
                 <div className="content-body">
                     <span className="capacity">
-                        <span>{`· 최대인원 ${props.capacity} 명`}</span>
-                        <span>{`·${props.type?.name}`}</span>
+                        <span>{`· 최대인원 ${property?.capacity} 명`}</span>
+                        <span>{`·${'type.name'}`}</span>
                     </span>
                     <div className="options">
-                        {props.facility?.items?.map(({ facility }, index) => (
+                        {property?.facility?.map((value, index) => (
                             <span
                                 className="option"
-                                key={`${facility}_${index}`}
-                            >{`· ${facility.name} `}</span>
+                                key={`facility_${index}`}
+                            >{`· ${value} `}</span>
                         ))}
                     </div>
                 </div>
                 <div className="content-footer">
                     <Grade value={4.64} />
                     <div className="price-warpper">
-                        <span className="price">₩ {props.price.toLocaleString()}</span>
+                        <span className="price">₩ {property?.price.toLocaleString()}</span>
                         <span className="perDay">/ 일</span>
                     </div>
                 </div>

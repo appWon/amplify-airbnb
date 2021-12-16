@@ -1,63 +1,111 @@
 import React from 'react'
-import { Map } from 'react-kakao-maps-sdk'
 import { debounce } from 'lodash'
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk'
+import { useSelector, useDispatch } from 'react-redux'
 
+import { KakaoMapContainer, ControllerContainer } from './style.kakaoMap'
 import { Spinner } from '../../molecules/Spinner'
 import { FoldButton } from '../../molecules/FoldButton'
 import { MapZoom } from '../../molecules/MapZoom'
-import { KakaoMapContainer, ControllerContainer } from './style.kakaoMap'
-import { ListPropertiesQuery } from '../../../API'
-
-import onResizeEvent from 'element-resize-event'
+import { PropertyItemsConnectionItem } from '../../../API'
+import { searchSelector } from '../../../store/selector'
+import { UpdateLocation } from '../../../store/search/types'
+import { AutoSearchButton } from '../../molecules/AutoSearchButton'
+import { Marker } from '../../atoms/Marker'
 
 interface KakaoMapProps {
     width?: string
     height?: string
-    isLoading?: boolean
-    properties?: ListPropertiesQuery | null
     mapFold?: boolean
+    isLoading?: boolean
+    propertys?: (PropertyItemsConnectionItem | null)[] | undefined
     onMapFoldChange?: (arg: boolean) => void
 }
 
 export const KakaoMap: React.FC<KakaoMapProps> = props => {
-    const mapRef = React.useRef<HTMLDivElement | null>(null)
-    const [map, setMap] = React.useState<kakao.maps.Map>()
-    const [viewLevel, setViewLevel] = React.useState<number>(3)
+    const { mapFold, width, height, isLoading, propertys, onMapFoldChange } = props
 
-    const onZoomIn = () => {
+    const dispatch = useDispatch()
+    const mapRef = React.useRef<HTMLElement | null>(null)
+
+    const [map, setMap] = React.useState<kakao.maps.Map>()
+    const [autoSearch, setAutoSearch] = React.useState<boolean>(true)
+    const { location } = useSelector(searchSelector)
+
+    function onZoomIn() {
         if (!map) return
         map.setLevel(map.getLevel() - 1)
     }
-    const onZoomOut = () => {
+
+    function onZoomOut() {
         if (!map) return
         map.setLevel(map.getLevel() + 1)
     }
 
-    const handleResized = () => {
-        map?.relayout()
+    function handleZoomChang(map: kakao.maps.Map) {
+        map.getLevel()
+    }
+
+    function handleCenterChanged() {
+        const center = map?.getCenter()
+
+        if (autoSearch && center) {
+            dispatch(
+                UpdateLocation({
+                    lat: center.getLat(),
+                    lon: center.getLng(),
+                })
+            )
+        }
     }
 
     React.useEffect(() => {
-        const element = mapRef?.current
-        if (element) {
-            onResizeEvent(element, debounce(handleResized, 100))
-        }
-    }, [map, mapRef])
+        map?.relayout()
+        map?.panTo(new kakao.maps.LatLng(location.lat, location.lon))
+    }, [mapFold])
 
     return (
         <KakaoMapContainer ref={mapRef}>
             <Map
-                center={{ lat: 37.478488927157834, lng: 126.97867906699992 }}
-                style={{ width: props.width, height: props.height }}
-                level={viewLevel}
+                center={{
+                    lat: location.lat,
+                    lng: location.lon,
+                }}
+                style={{ width: width, height: height }}
+                level={8}
                 onCreate={setMap}
-                onZoomChanged={map => setViewLevel(map.getLevel())}
+                onZoomChanged={handleZoomChang}
+                onCenterChanged={debounce(handleCenterChanged, 500)}
             >
-                {props.children}
+                <MarkerClusterer averageCenter={true} minLevel={4}>
+                    {propertys?.map(data => {
+                        if (data?.property && map) {
+                            const { lat, lon } = data?.property.location
+
+                            return (
+                                <Marker
+                                    map={map}
+                                    latitude={lat}
+                                    longitude={lon}
+                                    property={data?.property}
+                                    key={`${lat}-${lon}`}
+                                />
+                            )
+                        }
+                    })}
+                </MarkerClusterer>
             </Map>
             <ControllerContainer>
-                {/* <FoldButton isFold={props.mapFold} onChange={props.onMapFoldChange} /> */}
-                {/* <Spinner onClick={handleResized}>지도를 움직이며 검색하기</Spinner> */}
+                <FoldButton isFold={mapFold} onChange={onMapFoldChange} />
+                {isLoading ? (
+                    <Spinner>지도를 움직이며 검색하기</Spinner>
+                ) : (
+                    <AutoSearchButton
+                        checked={autoSearch}
+                        onChange={setAutoSearch}
+                        label={'지도를 움직이며 검색하기'}
+                    />
+                )}
                 <MapZoom onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
             </ControllerContainer>
         </KakaoMapContainer>
