@@ -24,27 +24,26 @@ export const Marker: React.FC<MarkerProps> = props => {
     }
 
     const handleClickMark = () => {
-        !infoWindow &&
-            setInfoWindow(
-                new kakao.maps.InfoWindow({
-                    map: props.map,
-                    content: renderToString(<MarkInfoWindow property={props.property} />),
-                    position: new kakao.maps.LatLng(props.latitude + 0.002, props.longitude),
-                })
-            )
+        setInfoWindow(
+            new kakao.maps.InfoWindow({
+                map: props.map,
+                content: renderToString(<MarkInfoWindow property={props.property} />),
+                position: new kakao.maps.LatLng(props.latitude + 0.002, props.longitude),
+            })
+        )
     }
 
     React.useEffect(() => {
         mark && kakao.maps.event.addListener(mark, 'click', handleClickMark)
 
         return () => mark && kakao.maps.event.addListener(mark, 'click', handleClickMark)
-    }, [mark, infoWindow])
+    }, [mark])
 
     React.useEffect(() => {
         kakao.maps.event.addListener(props.map, 'click', handleClickMap)
 
         return () => kakao.maps.event.addListener(props.map, 'click', handleClickMap)
-    }, [mark, infoWindow])
+    }, [infoWindow])
 
     return (
         <MarkerContainer>
