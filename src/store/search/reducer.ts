@@ -12,6 +12,12 @@ const initalSearchState: SearchState = {
         baby: 0,
         pet: 0,
     },
+    location: {
+        lat: 37.4765792187833,
+        lon: 126.98162506458999,
+    },
+    id: '',
+    loading: false,
 }
 
 export const seachReducer = (state = initalSearchState, action: SearchAction): SearchState => {
@@ -30,6 +36,11 @@ export const seachReducer = (state = initalSearchState, action: SearchAction): S
             return {
                 ...state,
                 guest: action.guest,
+            }
+        case 'UPDATE_LOCATION':
+            return {
+                ...state,
+                location: action.location,
             }
         default:
             return state
