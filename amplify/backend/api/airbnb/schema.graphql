@@ -1,148 +1,71 @@
-type Property @model @searchable @auth(
+type Property @model 
+@searchable 
+@auth(
     rules: [
-      { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-      { allow: owner, operations: [create, read, update, delete] }
-      { allow: public, operations: [read] }
+      # { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
+      # { allow: owner, operations: [create, read, update, delete] }
+      { allow: public }
     ]
-  ){
+  )
+  {
     id: ID!
     title: String!
-    hostId: String
-    content: String,
-    price: Int!,
-    pricePerGuest: Int,
-    longitude: Float!
-    latitude: Float!
-    street: String!
+    price: Int!
+    location: Location!
     capacity: Int!
-    cityId: ID
-    countryId: ID
-    districtId: ID
-    provinceId: ID
-    categoryId: ID
-    refundId: ID
-    typeId: ID
-    city: City @hasOne(fields: ["cityId"])
-    country: Country @hasOne(fields: ["countryId"])
-    district: Districts @hasOne(fields: ["districtId"])
-    province: Province  @hasOne(fields: ["provinceId"])
-    category: Category  @hasOne(fields: ["categoryId"])
-    refund: Refund  @hasOne(fields: ["refundId"])
-    type: Type  @hasOne(fields: ["typeId"])
-    images: [Image]  @hasMany(indexName: "byImage" ,fields: ["id"])
-    facility: [Propertyfacility] @hasMany(indexName: "byPropertyfacility", fields: ["id"])
+    images: [String]!
+    facility: [String]
+    gade: Int 
+
+    # street: String!
+    # capacity: Int!
+    # hostId: String
+    # content: String
+    # pricePerGuest: Int
+    # cityId: ID
+    # countryId: ID
+    # districtId: ID
+    # provinceId: ID
+    # categoryId: ID
+    # refundId: ID
+    # typeId: ID
+    # city: City @hasOne(fields: ["cityId"])
+    # country: Country @hasOne(fields: ["countryId"])
+    # district: Districts @hasOne(fields: ["districtId"])
+    # province: Province  @hasOne(fields: ["provinceId"])
+    # category: Category  @hasOne(fields: ["categoryId"])
+    # refund: Refund  @hasOne(fields: ["refundId"])
+    # type: Type  @hasOne(fields: ["typeId"])
+    # images: [Image]  @hasMany(indexName: "byImage" ,fields: ["id"])
+    # facility: [Propertyfacility] @hasMany(indexName: "byPropertyfacility", fields: ["id"])
 }
 
-type Image @model @auth(
-    rules: [
-      { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-      { allow: owner, operations: [create, read, update, delete] }
-      { allow: public, operations: [read] }
-    ]
-  ) {
-  id: ID!
-  url: String!
-  propertyId: ID! @index(name: "byImage")
+type Location {
+  lon: Float!
+  lat: Float!
 }
 
-type Propertyfacility @model @auth(
-    rules: [
-      { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-      { allow: owner, operations: [create, read, update, delete] }
-      { allow: public, operations: [read] }
-    ]
-  ) {
-  id: ID!
-  facilityId: ID!
-  propertyId: ID! @index(name: "byPropertyfacility")
-  facility: Facility @hasOne(fields: ["facilityId"])
+type PropertyItemsConnection {
+  items: [PropertyItemsConnectionItem]!
+  total: Int!
 }
 
-type Type @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
+type PropertyItemsConnectionItem {
+  property: Property!
+  distance: Float
 }
 
-
-type Refund @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  content: String!
+input PropertyItemsInput {
+  km: Int
+  from: Int
+  limit: Int
 }
 
-type Category @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID!
-  name: String!
+input LocationInput {
+  lon: Float!
+  lat: Float!
 }
 
-type Country @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
-  latitude: Float!
-  longitude: Float!
-}
-
-type Facility @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
-}
-
-
-type City @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
-  latitude: Float!
-  longitude: Float!
-  provinceId: ID!
-  province: Province @hasOne(fields: ["provinceId"])
-}
-
-
-type Province @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
-  latitude: Float!
-  longitude: Float!
-  countryId: ID!
-  country: Country @hasOne(fields: ["countryId"])
-}
-
-type Districts @model @auth(
-  rules: [
-    { allow: groups, groups: ["Admin"], operations: [create, delete, read, update] },
-    { allow: public, operations: [read] }
-  ]){
-  id: ID! 
-  name: String!
-  latitude: Float!
-  longitude: Float!
-  cityId: ID!
-  city: City @hasOne(fields: ["cityId"])
+type Query {
+  propertyItems(location: LocationInput, input: PropertyItemsInput): PropertyItemsConnection
 }
