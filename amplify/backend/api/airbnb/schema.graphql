@@ -15,7 +15,8 @@ type Property @model
     capacity: Int!
     images: [String]!
     facility: [String]
-    gade: Int 
+    gade: Int
+    type: [String]
 
     # street: String!
     # capacity: Int!
@@ -66,6 +67,11 @@ input LocationInput {
   lat: Float!
 }
 
+input PropertyFilterInput {
+  location: LocationInput
+  type: [String]
+}
+
 type Query {
-  propertyItems(location: LocationInput, input: PropertyItemsInput): PropertyItemsConnection
+  propertyItems(filter: PropertyFilterInput, input: PropertyItemsInput): PropertyItemsConnection
 }
