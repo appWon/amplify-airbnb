@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PropertyItemContainer } from './style.property'
+import * as S from './style.property'
 import { SliderImage } from '../../molecules/SliderImage'
 import { Grade } from '../../atoms/Grade'
 import { SliderItem } from '../../atoms/SliderImg'
@@ -11,14 +11,14 @@ export const PropertyItem: React.FC<PropertyItemsConnectionItem> = props => {
     const { property } = props
 
     return (
-        <PropertyItemContainer>
+        <S.PropertyItemContainer>
             <SliderImage imgs={property?.images} />
-            <div className="content">
-                <div className="content-heade">
+            <S.PropertyItemContentWapper>
+                <S.ContentHeader>
                     <div className="sub-title">{`수정중의 ${'type name'}`}</div>
                     <div className="title">{property?.title}</div>
-                </div>
-                <div className="content-body">
+                </S.ContentHeader>
+                <S.ContentBody>
                     <span className="capacity">
                         <span>{`· 최대인원 ${property?.capacity} 명`}</span>
                         <span>{`·${'type.name'}`}</span>
@@ -31,15 +31,15 @@ export const PropertyItem: React.FC<PropertyItemsConnectionItem> = props => {
                             >{`· ${value} `}</span>
                         ))}
                     </div>
-                </div>
-                <div className="content-footer">
+                </S.ContentBody>
+                <S.contentFooter>
                     <Grade value={4.64} />
                     <div className="price-warpper">
                         <span className="price">₩ {property?.price.toLocaleString()}</span>
-                        <span className="perDay">/ 일</span>
+                        <span className="perDay">/ 박</span>
                     </div>
-                </div>
-            </div>
-        </PropertyItemContainer>
+                </S.contentFooter>
+            </S.PropertyItemContentWapper>
+        </S.PropertyItemContainer>
     )
 }

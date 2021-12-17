@@ -3,13 +3,13 @@ import styled from 'styled-components'
 export const SliderImageContainer = styled.div`
     width: 300px;
     height: 200px;
-    cursor: pointer;
     border: 1px solid #e4e4e4;
     border-radius: 15px;
+    cursor: pointer;
 
     @media (max-width: 800px) {
-        max-width: none;
-        height: 600px;
+        width: 100%;
+        height: auto;
     }
 
     &:hover {
@@ -37,7 +37,7 @@ export const SliderImageContainer = styled.div`
         }
 
         @media (max-width: 800px) {
-            top: 150px;
+            top: 200px;
         }
     }
 

@@ -75,7 +75,7 @@ export const KakaoMap: React.FC<KakaoMapProps> = props => {
                 level={8}
                 onCreate={setMap}
                 onZoomChanged={handleZoomChang}
-                onCenterChanged={debounce(handleCenterChanged, 500)}
+                onCenterChanged={debounce(handleCenterChanged, 1000)}
             >
                 <MarkerClusterer averageCenter={true} minLevel={4}>
                     {propertys?.map(data => {
