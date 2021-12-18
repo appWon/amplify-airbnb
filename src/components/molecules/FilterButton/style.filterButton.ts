@@ -12,14 +12,14 @@ export const FilterButton = styled.button<{ isOpen: boolean }>`
     align-items: center;
     height: 40px;
     padding: 0 15px;
-    border: ${({ isOpen }) => (isOpen ? '2px solid black' : '1px solid #e4e4e4')};
+    border: ${({ isOpen }) => (isOpen ? '1px solid black' : '1px solid #e4e4e4')};
     border-radius: 20px;
     box-sizing: border-box;
     background-color: white;
     cursor: pointer;
 
     &:hover {
-        border: ${({ isOpen }) => (isOpen ? '2px solid black' : '1px solid black')};
+        border: ${({ isOpen }) => (isOpen ? '1px solid black' : '1px solid black')};
     }
 `
 export const FilterButtonContent = styled.div`

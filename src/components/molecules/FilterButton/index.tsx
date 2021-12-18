@@ -24,9 +24,9 @@ export const FilterButton: React.FC<FilterButton> = props => {
     }
 
     React.useEffect(() => {
-        window.addEventListener('click', handleCloseClick)
+        window.addEventListener('mousedown', handleCloseClick)
 
-        return () => window.addEventListener('click', handleCloseClick)
+        return () => window.addEventListener('mousedown', handleCloseClick)
     }, [isOpen])
 
     return (
