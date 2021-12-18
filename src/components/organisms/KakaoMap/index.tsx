@@ -78,17 +78,13 @@ export const KakaoMap: React.FC<KakaoMapProps> = props => {
                 onCenterChanged={debounce(handleCenterChanged, 1000)}
             >
                 <MarkerClusterer averageCenter={true} minLevel={4}>
-                    {propertys?.map(data => {
-                        if (data?.property && map) {
-                            const { lat, lon } = data?.property.location
-
+                    {propertys?.map((data, index) => {
+                        if (map && data?.property) {
                             return (
                                 <Marker
                                     map={map}
-                                    latitude={lat}
-                                    longitude={lon}
                                     property={data?.property}
-                                    key={`${lat}-${lon}`}
+                                    key={`kakao_mark_${index}`}
                                 />
                             )
                         }
