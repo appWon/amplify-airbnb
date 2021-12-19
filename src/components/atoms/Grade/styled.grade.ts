@@ -18,4 +18,20 @@ export const GradeContainer = styled.div`
         font-size: 13px;
         font-weight: 300;
     }
+
+    @media (max-width: 800px) {
+        .plceGradeIcon {
+            width: 25px;
+            height: 25px;
+        }
+
+        .plceGradeNumber {
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .plceGradeCount {
+            font-size: 16px;
+        }
+    }
 `
