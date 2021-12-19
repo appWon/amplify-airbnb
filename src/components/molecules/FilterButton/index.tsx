@@ -18,15 +18,15 @@ export const FilterButton: React.FC<FilterButton> = props => {
 
         if (isOpen && !buttonRef.current?.contains(target as Element)) {
             setIsOpen(false)
-        } else if (target.id === 'save') {
+        } else if (isOpen && target.id === 'save') {
             setIsOpen(false)
         }
     }
 
     React.useEffect(() => {
-        window.addEventListener('mousedown', handleCloseClick)
+        window.addEventListener('mouseup', handleCloseClick)
 
-        return () => window.addEventListener('mousedown', handleCloseClick)
+        return () => window.addEventListener('mouseup', handleCloseClick)
     }, [isOpen])
 
     return (
