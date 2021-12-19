@@ -17,28 +17,6 @@ type Property @model
     facility: [String]
     gade: Int
     type: [String]
-
-    # street: String!
-    # capacity: Int!
-    # hostId: String
-    # content: String
-    # pricePerGuest: Int
-    # cityId: ID
-    # countryId: ID
-    # districtId: ID
-    # provinceId: ID
-    # categoryId: ID
-    # refundId: ID
-    # typeId: ID
-    # city: City @hasOne(fields: ["cityId"])
-    # country: Country @hasOne(fields: ["countryId"])
-    # district: Districts @hasOne(fields: ["districtId"])
-    # province: Province  @hasOne(fields: ["provinceId"])
-    # category: Category  @hasOne(fields: ["categoryId"])
-    # refund: Refund  @hasOne(fields: ["refundId"])
-    # type: Type  @hasOne(fields: ["typeId"])
-    # images: [Image]  @hasMany(indexName: "byImage" ,fields: ["id"])
-    # facility: [Propertyfacility] @hasMany(indexName: "byPropertyfacility", fields: ["id"])
 }
 
 type Location {
@@ -56,6 +34,15 @@ type PropertyItemsConnectionItem {
   distance: Float
 }
 
+type PriceGroupItem {
+  group: String!
+  count: Int!
+}
+
+type PriceGroupByRangeConnection {
+  priceRangGroup: [PriceGroupItem]
+}
+
 input PropertyItemsInput {
   km: Int
   from: Int
@@ -67,11 +54,22 @@ input LocationInput {
   lat: Float!
 }
 
+input PriceInput {
+  min: Int
+  max: Int
+}
+
 input PropertyFilterInput {
   location: LocationInput
+  price: PriceInput
   type: [String]
+}
+
+input PriceGroupByRangeInput {
+  range: Int
 }
 
 type Query {
   propertyItems(filter: PropertyFilterInput, input: PropertyItemsInput): PropertyItemsConnection
+  priceGroupByRange(input: PriceGroupByRangeInput): PriceGroupByRangeConnection
 }

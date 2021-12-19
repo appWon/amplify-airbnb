@@ -1,0 +1,16 @@
+#set( $es_items_filter = [] )
+
+#foreach( $group in $context.result.aggregations.bytes_histogram.buckets )
+  #set ( $item = {
+    "group": $group.get("key"),
+    "count": $group.get("doc_count")
+  })
+  $util.qr($es_items_filter.add($item))
+#end
+
+#set( $es_response = {
+  "priceRangGroup": $es_items_filter
+} )
+
+#if( $velocityCount > 1 ) , #end
+$util.toJson($es_response)

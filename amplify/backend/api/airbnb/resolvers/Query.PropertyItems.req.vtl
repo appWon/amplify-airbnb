@@ -43,10 +43,28 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "range": {
+                                "price": {
+                                    #if( $filter.price )
+                                        "gte": $util.toJson($filter.price.min),
+                                        "lte": $util.toJson($filter.price.max)
+                                    #end  
+                                }
+                            }
                         }
                     ]
               	}
-          }
-	}	
+            },
+            "aggs"  : { 
+                "bytes_histogram"  : { 
+                    "histogram"  : { 
+                        "field"  : "price" ,
+                        "interval" : 4000
+                    }
+                }
+            }
+	    }	
 	}
 }
