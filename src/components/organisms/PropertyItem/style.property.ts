@@ -7,6 +7,13 @@ export const PropertyItemContainer = styled.div`
     max-width: 800px;
     width: 100%;
     border-bottom: 1px solid #eeeeee;
+    cursor: pointer;
+
+    &:hover {
+        .slick-arrow {
+            opacity: 1;
+        }
+    }
 
     @media (max-width: 800px) {
         flex-direction: column;

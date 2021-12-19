@@ -3,8 +3,8 @@ import React from 'react'
 import * as S from './style.property'
 import { SliderImage } from '../../molecules/SliderImage'
 import { Grade } from '../../atoms/Grade'
-import { SliderItem } from '../../atoms/SliderImg'
-import noImg from '../../../assetts/img/noImage.png'
+// import { SliderItem } from '../../atoms/SliderImg'
+// import noImg from '../../../assetts/img/noImage.png'
 import { PropertyItemsConnectionItem } from '../../../API'
 
 export const PropertyItem: React.FC<PropertyItemsConnectionItem> = props => {

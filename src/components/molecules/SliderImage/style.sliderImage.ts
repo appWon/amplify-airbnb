@@ -12,32 +12,14 @@ export const SliderImageContainer = styled.div`
         height: auto;
     }
 
-    &:hover {
-        .slick-arrow {
-            visibility: visible;
-        }
-    }
-
     .slick-arrow {
         position: absolute;
-        visibility: hidden;
-        z-index: 10;
-        width: 40px;
-        height: 40px;
-        top: 50%;
-        color: black;
-        background-color: white;
-        border-radius: 50%;
-        opacity: 0.4;
-        cursor: pointer;
-        transform: translateY(-50%);
+        width: 30px;
+        height: 30px;
+        opacity: 0;
 
-        &:hover {
-            opacity: 1;
-        }
-
-        @media (max-width: 800px) {
-            top: 200px;
+        &::before {
+            font-size: 30px;
         }
     }
 
@@ -46,11 +28,30 @@ export const SliderImageContainer = styled.div`
     }
 
     .slick-next {
-        right: 5px;
+        right: 0;
+        z-index: 10;
+
+        &:hover {
+            &::before {
+                opacity: 1;
+            }
+        }
     }
 
     .slick-prev {
-        left: 5px;
+        left: 0;
+        opacity: 1;
+        z-index: 10;
+
+        &:hover {
+            &::before {
+                opacity: 1;
+            }
+        }
+    }
+
+    .slick-disabled {
+        opacity: 0;
     }
 
     .slick-dots {
